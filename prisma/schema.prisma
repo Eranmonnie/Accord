@@ -77,7 +77,7 @@ enum channelType {
 model Channel {
   id          String      @id @default(uuid())
   name        String
-  channelType channelType @default(TEXT)
+  type channelType @default(TEXT)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
