@@ -7,7 +7,7 @@ export const currentProfile = async () => {
     return null;
   }
 
-  const profile = db.profile.findUnique({
+  const profile = await db.profile.findUnique({
     where: {
       userId: userId,
     },
