@@ -73,14 +73,17 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && <DropdownMenuSeparator />}
 
         {isModerator && (
-          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
+          onClick={()=>{onOpen("deleteServer", {server})}}
+          >
             Delete Server
             <TrashIcon className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
 
         {!isAdmin && (
-          <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
+          onClick={()=>onOpen("leaveServer", {server})}>
             Leave Channel
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
