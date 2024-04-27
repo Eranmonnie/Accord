@@ -28,7 +28,7 @@ const ServerMember = ({ server, member }: ServerMemberProps) => {
     params?.memberid ==member.id && "bg-zinc-700/20 dark:bg-zinc-700"
   )}>
     {roleIconMap[member?.role]}
-    <UserAvatar src={member.profile.imgUrl} className="h-7 w-7 md:h-10 md:w-10"/>
+    <UserAvatar className={`h-10 w-10 md:h-10 md:w-10`} src={member.profile.imgUrl} />
     <p className={cn(
         "font-semibold text-xs text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
         params?.channelid == member.id && "text-primary dark:text-zinc-200 dark:group-hover:text-white"

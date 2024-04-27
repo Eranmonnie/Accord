@@ -10,7 +10,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { channelType } from "@prisma/client";
+import { channelType as ChannelType } from "@prisma/client";
 import { useParams, useRouter } from "next/navigation";
 import {
   Dialog,
@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -46,11 +47,13 @@ const formSchema = z.object({
     .refine((name) => name !== "general", {
       message: "Channel name cannot be 'general'",
     }),
-  type: z.nativeEnum(channelType),
+  type: z.nativeEnum(ChannelType),
 });
 
 const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
+  const {channelType} = data
+  console.log(channelType)
 
   const router = useRouter();
   const params = useParams();
@@ -61,9 +64,20 @@ const CreateChannelModal = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType.TEXT,
+      type: channelType|| ChannelType.TEXT,
     },
   });
+
+  useEffect(()=>{
+   
+  if (channelType){
+    console.log(channelType)
+    form.setValue("type", channelType)
+  }
+  else{
+    form.setValue("type", ChannelType.TEXT)
+  }
+  },[channelType, form])
 
   const isLoading = form.formState.isSubmitting;
 
@@ -144,7 +158,7 @@ const CreateChannelModal = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.values(channelType).map((type) => (
+                        {Object.values(ChannelType).map((type) => (
                           <SelectItem
                             key={type}
                             value={type}
