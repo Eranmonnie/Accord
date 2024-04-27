@@ -28,7 +28,7 @@ const DeleteChannelModal = () => {
 
   const onClick = async () => { 
     try {
-      const url = queryString.stringify({
+      const url = queryString.stringifyUrl({
         url:`/api/channels/${channel?.id}`,
         query:{
           serverId: params?.serverid,
