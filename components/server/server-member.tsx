@@ -22,8 +22,14 @@ const roleIconMap = {
 const ServerMember = ({ server, member }: ServerMemberProps) => {
     const params = useParams()
     const router = useRouter()
+const onClick = ()=>{
+  router.push (`/servers/${params?.serverid}/conversations/${member.id}`)
+}
+
   return (
-  <button className={cn(
+  <button
+  onClick={onClick}
+  className={cn(
     " group px-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:text-zinc-700/50 transition mb-1",
     params?.memberid ==member.id && "bg-zinc-700/20 dark:bg-zinc-700"
   )}>
@@ -31,7 +37,7 @@ const ServerMember = ({ server, member }: ServerMemberProps) => {
     <UserAvatar className={`h-10 w-10 md:h-10 md:w-10`} src={member.profile.imgUrl} />
     <p className={cn(
         "font-semibold text-xs text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
-        params?.channelid == member.id && "text-primary dark:text-zinc-200 dark:group-hover:text-white"
+        params?.memberid == member.id && "text-primary dark:text-zinc-200 dark:group-hover:text-white"
     )}>
 
     {member.profile.name}
