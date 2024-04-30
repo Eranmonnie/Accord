@@ -8,7 +8,7 @@ const MainLayout = async ({ children }: { children: React.ReactNode }) => {
         <NavigationSideBar />
       </div>
       <main
-       className="md:pl-[72px] w-full h-full"
+       className=" fixed md:pl-[72px] w-full h-full"
        >{children}</main>
     </div>
   );
