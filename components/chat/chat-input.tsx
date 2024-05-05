@@ -4,6 +4,7 @@ import queryString from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from 'next/navigation';
 
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
@@ -29,6 +30,7 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
   });
 
   const isLoading = form.formState.isSubmitting;
+  const router = useRouter()
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -36,9 +38,12 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
         url: apiUrl,
         query,
       });
+
       await axios.post(url,values)
+      router.refresh();
+
     } catch (error) {
-      
+        console.log("ommmooo",error)
     }
   };
 

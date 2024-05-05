@@ -40,9 +40,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  return(
-    <SocketContext.Provider value={{socket, isConnected}}>
-        {children}
+  return (
+    <SocketContext.Provider value={{ socket, isConnected }}>
+      {children}
     </SocketContext.Provider>
-  )
+  );
 };
