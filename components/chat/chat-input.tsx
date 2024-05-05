@@ -4,12 +4,13 @@ import queryString from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
 import { Input } from "../ui/input";
 import { Plus, Smile } from "lucide-react";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface chatInputProps {
   apiUrl: string;
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
+  const { onOpen } = useModal();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,7 +32,7 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -39,11 +41,10 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
         query,
       });
 
-      await axios.post(url,values)
+      await axios.post(url, values);
       router.refresh();
-
     } catch (error) {
-        console.log("ommmooo",error)
+      console.log("ommmooo", error);
     }
   };
 
@@ -63,7 +64,10 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
                       onClick={() => {}}
                       className="absolute top-7  left-8 h-[24px] w-[24px] bg-zinc-500 dark:bd-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
                     >
-                      <Plus className="text-white dark:text-[#313338]" />
+                      <Plus
+                        onClick={() => onOpen("messageFile", apiUrl, query)}
+                        className="text-white dark:text-[#313338]"
+                      />
                     </button>
                     <Input
                       disabled={isLoading}

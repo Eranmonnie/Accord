@@ -66,10 +66,10 @@ export default async function handeler(
     const member = server.members.find(
       (member) => member.profileId == profile.id
     );
-    console.log(member);
+    // console.log(member);
 
     if (!member) {
-      return res.status(404).json({ message: "member not found omommoo" });
+      return res.status(404).json({ message: "member not found " });
     }
 
     const message = await db.message.create({
