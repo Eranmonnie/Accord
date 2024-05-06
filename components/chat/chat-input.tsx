@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 
 import { Input } from "../ui/input";
-import { Plus, Smile } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useModal } from "@/hooks/use-modal-store";
+import { EmojiPicker } from "../emoji-picker";
 
 interface chatInputProps {
   apiUrl: string;
@@ -42,6 +43,7 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
       });
 
       await axios.post(url, values);
+      form.reset();
       router.refresh();
     } catch (error) {
       console.log("ommmooo", error);
@@ -65,7 +67,7 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
                       className="absolute top-7  left-8 h-[24px] w-[24px] bg-zinc-500 dark:bd-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
                     >
                       <Plus
-                        onClick={() => onOpen("messageFile", apiUrl, query)}
+                        onClick={() => onOpen("messageFile", {apiUrl, query})}
                         className="text-white dark:text-[#313338]"
                       />
                     </button>
@@ -79,7 +81,9 @@ const ChatInput = ({ apiUrl, query, name, type }: chatInputProps) => {
                     />
 
                     <div className="absolute top-7 right-8">
-                      <Smile />
+                      <EmojiPicker
+                      onChange={(emoji:string)=>field.onChange(`${field.value} ${emoji}`)}
+                      />
                     </div>
                   </div>
                 </FormControl>
