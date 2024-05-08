@@ -1,8 +1,10 @@
+"use client";
 import React from "react";
 import { Hash } from "lucide-react";
 import MobileToggle from "../ui/mobile-toggle";
 import UserAvatar from "../user-avatar";
 import SocketIndicator from "../socket-indicator";
+import { ChatVideoButton } from "./chat-video-button";
 interface chatHeaderProps {
   serverid: string;
   name: string;
@@ -25,6 +27,7 @@ const ChatHeader = ({ serverid, name, type, imageUrl }: chatHeaderProps) => {
       )}
       <p className="font-semibold text-md text-black dark:text-white">{name}</p>
       <div className="ml-auto flex items-center">
+        {type == "conversation" && <ChatVideoButton />}
         <SocketIndicator />
       </div>
     </div>
