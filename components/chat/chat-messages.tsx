@@ -6,9 +6,10 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import { ChatItem } from "./chat-item";
-import {format} from "date-fns"
+import { format } from "date-fns";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
-const DATE_FORMAT = "d MM yyyy, HH:mm"
+const DATE_FORMAT = "d MM yyyy, HH:mm";
 
 type MessageWithMemberWithProfile = Message & {
   member: Member & {
@@ -40,6 +41,8 @@ export const ChatMessages = ({
   type,
 }: ChatmessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
       queryKey,
@@ -47,6 +50,8 @@ export const ChatMessages = ({
       paramKey,
       paramValue,
     });
+
+  useChatSocket({ queryKey, addKey, updateKey });
 
   // if (status == "error") {
   //   return (
@@ -78,19 +83,19 @@ export const ChatMessages = ({
         {data?.pages.map((group, i) => (
           <Fragment key={i}>
             {group.items.map((message: MessageWithMemberWithProfile) => (
-             <ChatItem
-             key={message.id}
-             id={message.id}
-             currentMember={member}
-             member={message.member}
-             content={message.content}
-             fileUrl={message.fileUrl}
-             deleted={message.deleted}
-             timeStamp={format(new Date(message.createdAt), DATE_FORMAT)}
-             isUpdated = {message.updatedAt != message.createdAt}
-             socketUrl={socketUrl}
-             socketQuery={socketQuery}
-             />
+              <ChatItem
+                key={message.id}
+                id={message.id}
+                currentMember={member}
+                member={message.member}
+                content={message.content}
+                fileUrl={message.fileUrl}
+                deleted={message.deleted}
+                timeStamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                isUpdated={message.updatedAt != message.createdAt}
+                socketUrl={socketUrl}
+                socketQuery={socketQuery}
+              />
             ))}
           </Fragment>
         ))}
