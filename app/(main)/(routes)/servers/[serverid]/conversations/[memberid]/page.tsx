@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getOrCreateConvo } from "@/lib/conversation";
+import { ChatMessages } from "@/components/chat/chat-messages";
+import ChatInput from "@/components/chat/chat-input";
 
 interface memberIdPageProps {
   params: {
@@ -21,18 +23,18 @@ const MemgerIdPage = async ({ params }: memberIdPageProps) => {
     return redirectToSignIn();
   }
 
-  const member = await db.member.findFirst({
+  const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverid,
       profileId: profile.id,
     },
   });
 
-  if (!member) {
+  if (!currentMember) {
     return redirect("/");
   }
 
-  const convo = await getOrCreateConvo(member.id, params.memberid);
+  const convo = await getOrCreateConvo(currentMember.id, params.memberid);
   if (!convo) {
     return redirect(`servers/${params.serverid}`);
   }
@@ -48,6 +50,28 @@ const MemgerIdPage = async ({ params }: memberIdPageProps) => {
         name={otherMember.profile.name}
         serverid={params.serverid}
         type="conversation"
+      />
+      <ChatMessages
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={convo.id}
+        type="conversation"
+        apiUrl="/api/direct-messages"
+        paramKey="conversationId"
+        paramValue={convo.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: convo.id,
+        }}
+      />
+
+      <ChatInput
+        name={otherMember.profile.name}
+        type="conversation"
+        apiUrl="/api/socket/direct-messages"
+        query={{
+          conversationId: convo.id,
+        }}
       />
     </div>
   );
