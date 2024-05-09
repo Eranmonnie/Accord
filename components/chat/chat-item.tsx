@@ -1,5 +1,5 @@
 "use client";
-import * as z from "Zod";
+import * as z from "zod";
 import axios from "axios";
 import queryString from "query-string";
 import { useForm } from "react-hook-form";
