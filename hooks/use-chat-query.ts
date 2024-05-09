@@ -33,21 +33,9 @@ export const useChatQuery = ({
   };
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
+      initialPageParam: undefined,
       queryKey: [queryKey],
-      queryFn: async ({ pageParam = undefined }) => {
-        const url = queryString.stringifyUrl(
-          {
-            url: apiUrl,
-            query: {
-              cursor: pageParam,
-              [paramKey]: paramValue,
-            },
-          },
-          { skipNull: true }
-        );
-        const res = await fetch(url);
-        return res.json();
-      },
+      queryFn: fetchMessages,
       getNextPageParam: (lastPage) => lastPage?.nextCursor,
       refetchInterval: isConnected ? false : 1000,
     });
