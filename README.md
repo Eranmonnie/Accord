@@ -1,5 +1,5 @@
 
-## welcome to Space (named it accord on github by accident😅)
+## welcome to Space 😄
 
 First, install all dependencies:
 
